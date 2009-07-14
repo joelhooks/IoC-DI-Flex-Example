@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Inversion of Control/Dependency Injection Using Parsley
+	Image Gallery
+	
+	Any portion of this demonstration may be reused for any purpose where not 
+	licensed by another party restricting such use. Please leave the credits intact.
+	
+	Joel Hooks
+	http://joelhooks.com
+	joelhooks@gmail.com 
+-->
+<mx:Object 
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:models="com.joelhooks.parsley.example.models.*" 
+    xmlns:controllers="com.joelhooks.parsley.example.controllers.*"
+    xmlns="http://www.spicefactory.org/parsley"
+    xmlns:flickr="com.adobe.webapis.flickr.*" 
+    xmlns:presentation="com.joelhooks.parsley.example.models.presentation.*">
+        
+    <mx:Script>
+    	<![CDATA[
+    		import com.joelhooks.parsley.example.delegates.FlickrImageServiceDelegate;
+    	]]>
+    </mx:Script>
+  
+  	<!-- Service Delegate -->
+    <Object id="photoServiceDelegate" type="{FlickrImageServiceDelegate}">
+    	<Property name="apiKey" value="YOUR_API_KEY"/>
+    	<Property name="secret" value="YOUR_SECRET"/>
+    </Object>
+    
+    <!-- Model -->
+    <presentation:FlickrGalleryPresentationModel id="galleryPresentationModel"/>
+    
+    <!-- Actions -->
+    <controllers:RetrieveGalleryAction />
+    <controllers:DisplayGalleryAction />
+    <controllers:SelectImageAction />
+    
+</mx:Object>

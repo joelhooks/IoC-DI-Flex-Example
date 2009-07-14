@@ -1,0 +1,8 @@
+.metadata/*
+.svn
+bin-debug/
+bin-release/
+*/build/
+.settings
+/*.mode1v3
+/*.pbxuser

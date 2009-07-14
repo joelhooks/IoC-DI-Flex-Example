@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Inversion of Control/Dependency Injection Using Parsley
+	Image Gallery
+	
+	Any portion of this demonstration may be reused for any purpose where not 
+	licensed by another party restricting such use. Please leave the credits intact.
+	
+	Joel Hooks
+	http://joelhooks.com
+	joelhooks@gmail.com 
+-->
+<s:Application 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	preinitialize="onPreInitialize()" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo" 
+	minWidth="1024" minHeight="768" 
+	xmlns:tag="org.spicefactory.parsley.flex.tag.*" 
+	xmlns:spicefactory="http://www.spicefactory.org/parsley/flex"
+	addedToStage="this.addedToStageHandler(event)" 
+	applicationComplete="trace('application complete');" 
+	xmlns:views="com.joelhooks.parsley.example.views.*" 
+	xmlns:delegates="com.joelhooks.parsley.example.delegates.*">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import com.joelhooks.parsley.example.delegates.FlickrImageServiceDelegate;
+			import mx.controls.Button;
+			import org.spicefactory.lib.reflect.types.Void;
+			import org.spicefactory.lib.logging.Logger;
+			import mx.logging.LogEventLevel;
+			import com.joelhooks.parsley.example.events.GalleryImageServiceEvent;
+			import org.spicefactory.parsley.flex.FlexContextBuilder;
+			
+			protected function onPreInitialize():void
+			{
+				//new FlickrImageServiceDelegate();
+				this.logTarget.level = LogEventLevel.ALL;
+				FlexContextBuilder.build(Beans);
+			}
+			
+			protected function addedToStageHandler(event:Event):void
+			{
+				//Let the container know that this component is ready to be added
+				//to the view context
+				dispatchEvent(new Event('configureIOC', true));
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<mx:TraceTarget id="logTarget"/>
+	</fx:Declarations>
+	<views:GalleryView/>
+</s:Application>
