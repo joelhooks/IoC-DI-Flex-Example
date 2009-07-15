@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<swiz:BeanLoader xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:swiz="http://swiz.swizframework.org" 
+    xmlns:controllers="com.joelhooks.parsley.example.controllers.*" 
+    xmlns:presentation="com.joelhooks.parsley.example.models.presentation.*" 
+    xmlns:delegates="com.joelhooks.parsley.example.delegates.*">
+    
+	<delegates:FlickrImageServiceDelegate 
+		id="galleryImageServiceDelegate" 
+		apiKey="YOUR_KEY" 
+		secret="YOUR_SECRET"/>
+	
+    <presentation:FlickrGalleryPresentationModel id="galleryPresentationModel" /> 
+            
+    <controllers:DisplayGalleryAction id="displayGalleryAction"/>
+    <controllers:RetrieveGalleryAction id="retrieveGalleryAction"/>
+    <controllers:SelectImageAction id="selectImageAction"/>
+</swiz:BeanLoader>

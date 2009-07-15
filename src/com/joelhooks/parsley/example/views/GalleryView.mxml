@@ -20,14 +20,9 @@
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
-	<fx:Metadata>
-		[Event(name="selectGalleryImage", type="com.joelhooks.parsley.example.events.GalleryImageEvent")]
-		[ManagedEvents("selectGalleryImage")]
-	</fx:Metadata>
 		
 	<fx:Script>
 		<![CDATA[
-			import org.spicefactory.lib.reflect.types.Void;
 			import mx.events.FlexEvent;
 			import com.joelhooks.parsley.example.events.GalleryImageEvent;
 			import com.joelhooks.parsley.example.models.presentation.IGalleryPresentationModel;
@@ -35,7 +30,7 @@
 			import mx.collections.ArrayCollection;
 			 
 			[Bindable]
-			[Inject(id="galleryPresentationModel")]
+			[Autowire]
 			public var model:IGalleryPresentationModel;
 			
 

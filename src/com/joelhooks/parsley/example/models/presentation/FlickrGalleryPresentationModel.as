@@ -11,21 +11,33 @@
 */
 package com.joelhooks.parsley.example.models.presentation
 {
+	import com.joelhooks.parsley.example.events.GalleryImageEvent;
 	import com.joelhooks.parsley.example.models.vo.Gallery;
 	import com.joelhooks.parsley.example.models.vo.GalleryImage;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	
+	import org.swizframework.factory.IDispatcherBean;
+
 	[Bindable]
-	public class FlickrGalleryPresentationModel extends EventDispatcher implements IGalleryPresentationModel
+	public class FlickrGalleryPresentationModel extends EventDispatcher implements IGalleryPresentationModel, IDispatcherBean
 	{
 		private var _gallery:Gallery;
 		private var _selectedImage:GalleryImage;
 		
+		private var _dispatcher:IEventDispatcher;
+
+		public function set dispatcher(v:IEventDispatcher):void
+		{
+			_dispatcher = v;
+		}
+
+		
 		public function FlickrGalleryPresentationModel( )
 		{
-			
+
 		}
 		
 		[Bindable( "galleryChanged" )]
@@ -38,11 +50,14 @@ package com.joelhooks.parsley.example.models.presentation
 		{
 			this._gallery = v;
 			this.dispatchEvent(new Event("galleryChanged"));
+			this._dispatcher.dispatchEvent(new GalleryImageEvent(GalleryImageEvent.SELECT_GALLERY_IMAGE, 
+				gallery.photos[0] as GalleryImage));
 		}
 		
 		[Bindable( "selectedImageChanged" )]
 		public function get selectedImage():GalleryImage
 		{
+		
 			return this._selectedImage;
 		}
 		

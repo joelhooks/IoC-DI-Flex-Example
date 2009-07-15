@@ -20,7 +20,7 @@ package com.joelhooks.parsley.example.controllers
 
 	public class RetrieveGalleryAction extends EventDispatcher
 	{
-		[Inject(id="photoServiceDelegate")]
+		[Autowire]
 		public var serviceDelegate:IGalleryImageServiceDelegate;
 		
 		public function RetrieveGalleryAction(target:IEventDispatcher=null)
@@ -28,8 +28,8 @@ package com.joelhooks.parsley.example.controllers
 			super(target);
 		}
 		
-		[MessageHandler(selector="serviceReady")]
-		public function handlePhotoServiceReady(event:GalleryImageServiceEvent):void
+		[Mediate( event="serviceReady" )]
+		public function handlePhotoServiceReady(event:GalleryImageServiceEvent=null):void
 		{
 			serviceDelegate.loadGallery();
 		}

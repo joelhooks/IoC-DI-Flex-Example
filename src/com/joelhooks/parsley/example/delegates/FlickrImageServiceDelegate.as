@@ -15,21 +15,19 @@ package com.joelhooks.parsley.example.delegates
 	import com.adobe.webapis.flickr.Photo;
 	import com.adobe.webapis.flickr.events.FlickrResultEvent;
 	import com.adobe.webapis.flickr.methodgroups.Photos;
-	import com.adobe.webapis.flickr.methodgroups.helpers.PhotoSearchParams;
 	import com.joelhooks.parsley.example.events.GalleryEvent;
-	import com.joelhooks.parsley.example.events.GalleryImageServiceEvent;
 	import com.joelhooks.parsley.example.models.vo.Gallery;
 	import com.joelhooks.parsley.example.models.vo.GalleryImage;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	
 	import mx.collections.ArrayCollection;
+	
+	import org.swizframework.factory.IDispatcherBean;
 
-	[Event(name="serviceReady", type="com.joelhooks.parsley.example.events.GalleryImageServiceEvent")]
-	[Event(name="galleryLoaded",type="com.joelhooks.parsley.example.events.GalleryEvent")]
-	[ManagedEvents("galleryLoaded,serviceReady")]
-	public class FlickrImageServiceDelegate extends EventDispatcher implements IGalleryImageServiceDelegate
+	public class FlickrImageServiceDelegate extends EventDispatcher implements IGalleryImageServiceDelegate, IDispatcherBean
 	{
 		private var service:FlickrService;
 		private var photos:Photos;
@@ -37,22 +35,29 @@ package com.joelhooks.parsley.example.delegates
 		public var apiKey:String;
 		public var secret:String;
 		public var NSID:String;
+		
+		private var _dispatcher:IEventDispatcher;
+
+		public function set dispatcher(v:IEventDispatcher):void
+		{
+			_dispatcher = v;
+		}
 
 		public function FlickrImageServiceDelegate()
 		{
 		}
 		
-		[PostConstruct]
-		public function init():void
-		{
-			trace("Configuring Service");
-			this.service = new FlickrService(this.apiKey);
-			this.photos = new Photos(this.service);
-			this.dispatchEvent(new GalleryImageServiceEvent(GalleryImageServiceEvent.SERVICE_READY));
-		}
 
 		public function loadGallery():void
 		{
+			if(!this.service)
+			{
+				this.service = new FlickrService(this.apiKey);
+			}
+			else
+			{
+				throw new Error("No Service");
+			}
 			service.addEventListener(FlickrResultEvent.INTERESTINGNESS_GET_LIST, handleSearchResult);
 			service.interestingness.getList()
 		}
@@ -75,15 +80,7 @@ package com.joelhooks.parsley.example.delegates
 				gallery.photos.addItem( photo );
 			}
 			
-			this.dispatchEvent(new GalleryEvent(GalleryEvent.GALLERY_LOADED, gallery));
-		}
-		
-		public function handleLoadGalleryComplete(event:Event):void
-		{
-		}
-		
-		public function handleLoadImageComplete(event:Event):void
-		{
+			this._dispatcher.dispatchEvent(new GalleryEvent(GalleryEvent.GALLERY_LOADED, gallery));
 		}
 	}
 }

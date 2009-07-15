@@ -11,31 +11,27 @@
 */
 package com.joelhooks.parsley.example.controllers
 {
-	import com.joelhooks.parsley.example.events.GalleryEvent;
 	import com.joelhooks.parsley.example.events.GalleryImageEvent;
 	import com.joelhooks.parsley.example.models.presentation.IGalleryPresentationModel;
+	import com.joelhooks.parsley.example.models.vo.Gallery;
 	import com.joelhooks.parsley.example.models.vo.GalleryImage;
 	
 	import flash.events.EventDispatcher;
 
-	[Event(name="selectGalleryImage", type="com.joelhooks.parsley.example.events.GalleryImageEvent")]
-	[ManagedEvents("selectGalleryImage")]
 	public class DisplayGalleryAction extends EventDispatcher
 	{
-		[Inject(id="galleryPresentationModel")]
+		[Autowire]
 		public var galleryPresentationModel:IGalleryPresentationModel;
 		
 		public function DisplayGalleryAction()
 		{
 		}
 		
-		[MessageHandler(selector="galleryLoaded")]
-		public function handleGalleryLoaded(event:GalleryEvent):void
+		[Mediate(event="galleryLoaded", properties="gallery")]
+		public function handleGalleryLoaded(gallery:Gallery):void
 		{
-			this.galleryPresentationModel.gallery = event.gallery
-			trace(event.gallery.photos.length);
-			this.dispatchEvent(new GalleryImageEvent(GalleryImageEvent.SELECT_GALLERY_IMAGE, 
-				event.gallery.photos[0] as GalleryImage));
+			this.galleryPresentationModel.gallery = gallery
+
 		}
 	}
 }

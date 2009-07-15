@@ -15,7 +15,6 @@ package com.joelhooks.parsley.example.delegates
 
 	public interface IGalleryImageServiceDelegate
 	{
-		function init():void;
 		function loadGallery():void;
 	}
 }

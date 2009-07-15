@@ -19,27 +19,25 @@
 	xmlns:tag="org.spicefactory.parsley.flex.tag.*" 
 	xmlns:spicefactory="http://www.spicefactory.org/parsley/flex"
 	addedToStage="this.addedToStageHandler(event)" 
-	applicationComplete="trace('application complete');" 
+	applicationComplete="dispatchEvent(new GalleryImageServiceEvent(GalleryImageServiceEvent.SERVICE_READY));" 
 	xmlns:views="com.joelhooks.parsley.example.views.*" 
-	xmlns:delegates="com.joelhooks.parsley.example.delegates.*">
+	xmlns:delegates="com.joelhooks.parsley.example.delegates.*" xmlns:swiz="http://swiz.swizframework.org">
 	<s:layout>
 		<s:VerticalLayout/>
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
+			import com.joelhooks.parsley.example.events.GalleryEvent;
+			import com.joelhooks.parsley.example.views.GalleryView;
 			import com.joelhooks.parsley.example.delegates.FlickrImageServiceDelegate;
 			import mx.controls.Button;
-			import org.spicefactory.lib.reflect.types.Void;
-			import org.spicefactory.lib.logging.Logger;
 			import mx.logging.LogEventLevel;
 			import com.joelhooks.parsley.example.events.GalleryImageServiceEvent;
-			import org.spicefactory.parsley.flex.FlexContextBuilder;
 			
 			protected function onPreInitialize():void
 			{
-				//new FlickrImageServiceDelegate();
 				this.logTarget.level = LogEventLevel.ALL;
-				FlexContextBuilder.build(Beans);
+				//FlexContextBuilder.build(Beans);
 			}
 			
 			protected function addedToStageHandler(event:Event):void
@@ -53,6 +51,12 @@
 	</fx:Script>
 	<fx:Declarations>
 		<mx:TraceTarget id="logTarget"/>
+		<swiz:SwizConfig 
+			strict="true" 
+			mediateBubbledEvents="true" 
+			eventPackages="com.joelhooks.parsley.example.events" 
+			viewPackages="com.joelhooks.parsley.example.views" 
+			beanLoaders="{ [ SwizBeans ] }"/>
 	</fx:Declarations>
 	<views:GalleryView/>
 </s:Application>

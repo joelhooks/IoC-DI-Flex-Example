@@ -11,7 +11,6 @@
 */
 package com.joelhooks.parsley.example.controllers
 {
-	import com.joelhooks.parsley.example.events.GalleryImageEvent;
 	import com.joelhooks.parsley.example.models.presentation.IGalleryPresentationModel;
 	import com.joelhooks.parsley.example.models.vo.GalleryImage;
 	
@@ -20,7 +19,7 @@ package com.joelhooks.parsley.example.controllers
 
 	public class SelectImageAction extends EventDispatcher
 	{
-		[Inject(id="galleryPresentationModel")]
+		[Autowire]
 		public var galleryPresentationModel:IGalleryPresentationModel;
 		
 		public function SelectImageAction(target:IEventDispatcher=null)
@@ -28,17 +27,17 @@ package com.joelhooks.parsley.example.controllers
 			super(target);
 		}
 
-		[MessageHandler(selector="selectGalleryImage")]
-		public function handleSelectImage(event:GalleryImageEvent):void
+		[Mediate(event="selectGalleryImage",properties="image")]
+		public function handleSelectImage(image:GalleryImage):void
 		{
-			if(event.image)
-				this.galleryPresentationModel.selectedImage = event.image;
+			if(image)
+				this.galleryPresentationModel.selectedImage = image;
 			else if(this.galleryPresentationModel.gallery.photos.length>0)
 				this.galleryPresentationModel.selectedImage = this.galleryPresentationModel.gallery.photos[0];
 			
-			for each(var image:GalleryImage in this.galleryPresentationModel.gallery.photos)
+			for each(var galleryImage:GalleryImage in this.galleryPresentationModel.gallery.photos)
 			{
-				image.selected = image == this.galleryPresentationModel.selectedImage;
+				galleryImage.selected = galleryImage == this.galleryPresentationModel.selectedImage;
 			}
 		}
 	}
